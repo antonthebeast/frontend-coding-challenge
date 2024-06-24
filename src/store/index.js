@@ -6,16 +6,18 @@ export default createStore({
     name: '',
     isLucky: null,
     luckyPeople: [],
-    winners: []
+    winners: JSON.parse(localStorage.getItem('winnerNames')) || []
   },
   getters: {
     getName: state => state.name,
     getIsLucky: state => state.isLucky,
     getLuckyPeople: state => state.luckyPeople,
-    getWinners: state => state.winners
+    getWinners: state => state.winners,
+    isWinner: state => state.winners.includes(state.name)
   },
   mutations: {
     setName(state, name) {
+      name = name.replace(/^./, match => match.toUpperCase()); // first letter uppercase
       state.name = name;
     },
     setIsLucky(state, isLucky) {
@@ -24,9 +26,10 @@ export default createStore({
     setLuckyPeople(state, people) {
       state.luckyPeople = people;
     },
-    addWinnerName(state, name) {
+    addWinnerName(state, name ) {
       if (state.winners.indexOf(name) == -1) {
         state.winners.push(name);
+        localStorage.setItem('winnerNames', JSON.stringify(state.winners))
       }
     }
   },
@@ -40,7 +43,6 @@ export default createStore({
       }
     },
     async checkName({ commit, state }) {
-      state.name = state.name.replace(/^./, match => match.toUpperCase()); // first letter uppercase
       if (state.luckyPeople.length === 0) {
         await this.dispatch('fetchLuckyPeople');
       }

@@ -1,4 +1,12 @@
 <template>
+  <el-dialog v-model="sorryDialogVisible" title="Sorry" width="500" center @close="closeDialog">
+    <span>I'm sorry, {{ name }} has already received their prize today!</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="closeDialog">OK</el-button>
+      </div>
+    </template>
+  </el-dialog>
   <div class="container">
     <el-row>
       <el-col>Check that your name is lucky today:</el-col>
@@ -15,10 +23,15 @@
 
 <script>
 import NameSearchResponse from '@/components/NameSearchResponse.vue'
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'NameSearcher',
+  data() {
+    return {
+      sorryDialogVisible: false,
+    }
+  },
   components: {
     NameSearchResponse,
   },
@@ -39,13 +52,21 @@ export default {
   methods: {
     ...mapActions(['checkName']),
     ...mapMutations(['setName']),
+    ...mapGetters(['isWinner']),
     submitName() {
       if (!this.isDisabled) {
-        this.checkName()
+        if (this.isWinner()) {
+          this.sorryDialogVisible = true;
+        } else {
+          this.checkName()
+        }
       }
     },
     formatName(value) {
       return value.replace(/[^a-zA-Z]/g, '');
+    },
+    closeDialog() {
+      this.sorryDialogVisible = false;
     }
   }
 }
