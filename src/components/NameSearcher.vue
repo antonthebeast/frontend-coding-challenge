@@ -12,7 +12,7 @@
       <el-col>Check that your name is lucky today:</el-col>
     </el-row>
     <el-row>
-      <el-col><el-input class="nameinput" v-model="nameInput" placeholder="Input 'name'" clearable type="text" :formatter="formatName" /></el-col>
+      <el-col><el-input class="nameinput" v-model="nameInput" placeholder="Input 'name'" clearable type="text" :formatter="formatName" @keyup.enter="submitName" /></el-col>
     </el-row>
     <el-row>
       <el-col><el-button type="success" :disabled="isDisabled" round @click="submitName">Submit</el-button></el-col>
