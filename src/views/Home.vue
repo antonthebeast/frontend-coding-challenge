@@ -1,4 +1,5 @@
 <template>
+  <top-menu></top-menu>
   <div class="home-container">
     <h2>Is your name lucky?</h2>
     <p>Welcome to the game where we find out whether your name is one of our lucky names of the day.
@@ -11,12 +12,14 @@
 <script>
 import NameSearcher from '@/components/NameSearcher.vue'
 import WinnersList from '@/components/WinnersList.vue'
+import TopMenu from '@/components/TopMenu.vue'
 
 export default {
   name: 'Home',
   components: {
     NameSearcher,
-    WinnersList
+    WinnersList,
+    TopMenu
   }
 }
 </script>
