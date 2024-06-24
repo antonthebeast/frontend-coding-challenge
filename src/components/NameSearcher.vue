@@ -36,7 +36,7 @@ export default {
     NameSearchResponse,
   },
   computed: {
-    ...mapState(['name']),
+    ...mapState(['name', 'winners', 'maxWinners']),
     nameInput: {
       get() {
         return this.name
@@ -46,7 +46,7 @@ export default {
       }
     },
     isDisabled() {
-      return this.name.trim().length < 3;
+      return this.name.trim().length < 3 || this.winners.length >= this.maxWinners;
     }
   },
   methods: {

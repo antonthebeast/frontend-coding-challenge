@@ -6,13 +6,15 @@ export default createStore({
     name: '',
     isLucky: null,
     luckyPeople: [],
-    winners: JSON.parse(localStorage.getItem('winnerNames')) || []
+    winners: JSON.parse(localStorage.getItem('winnerNames')) || [],
+    maxWinners: 10 // per day
   },
   getters: {
     getName: state => state.name,
     getIsLucky: state => state.isLucky,
     getLuckyPeople: state => state.luckyPeople,
     getWinners: state => state.winners,
+    getMaxWinners: state => state.maxWinners,
     isWinner: state => state.winners.includes(state.name)
   },
   mutations: {
@@ -31,6 +33,10 @@ export default createStore({
         state.winners.push(name);
         localStorage.setItem('winnerNames', JSON.stringify(state.winners))
       }
+    },
+    clearWinners(state) {
+      state.winners = [];
+      localStorage.setItem('winnerNames', JSON.stringify(state.winners));
     }
   },
   actions: {
@@ -50,9 +56,12 @@ export default createStore({
       commit('setIsLucky', isLucky);
     },
     async addWinner({ commit, state }) {
-      if (state.isLucky) {
+      if (state.isLucky && state.winners.length < state.maxWinners) {
         commit('addWinnerName', state.name);
       }
+    },
+    nextDay({ commit }) {
+      commit('clearWinners');
     }
   },
 })
