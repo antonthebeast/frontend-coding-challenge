@@ -11,7 +11,7 @@
   import TopMenu from '@/components/TopMenu.vue'
   
   export default {
-    name: 'Winners',
+    name: 'WinnersPage',
     components: {
       WinnersList,
       TopMenu

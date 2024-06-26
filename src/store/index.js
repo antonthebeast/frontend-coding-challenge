@@ -7,7 +7,8 @@ export default createStore({
     isLucky: null,
     luckyPeople: [],
     winners: JSON.parse(localStorage.getItem('winnerNames')) || [],
-    maxWinners: 10 // per day
+    maxWinners: 10, // per day
+    error: null
   },
   getters: {
     getName: state => state.name,
@@ -37,23 +38,28 @@ export default createStore({
     clearWinners(state) {
       state.winners = [];
       localStorage.setItem('winnerNames', JSON.stringify(state.winners));
+    },
+    setError(state, error) {
+      state.error = error;
     }
   },
   actions: {
     async fetchLuckyPeople({ commit }) {
+      commit('setLuckyPeople', []);
       try {
-        const people = await getAll();
+        const people = await getAll(/*canReturnError*/true);
         commit('setLuckyPeople', people);
+        commit('setError', null); // Clear any previous errors
       } catch (error) {
-        console.error('Failed to fetch lucky people:', error); // handle this error? perhaps by setting an error state?
+        commit('setError', "Failed to check name. Please try again later.");
       }
     },
     async checkName({ commit, state }) {
-      if (state.luckyPeople.length === 0) {
-        await this.dispatch('fetchLuckyPeople');
+      await this.dispatch('fetchLuckyPeople');
+      if (state.luckyPeople.length > 0) {
+        const isLucky = state.luckyPeople.some(person => person.name.toLowerCase() === state.name.toLowerCase());
+        commit('setIsLucky', isLucky);
       }
-      const isLucky = state.luckyPeople.some(person => person.name.toLowerCase() === state.name.toLowerCase());
-      commit('setIsLucky', isLucky);
     },
     async addWinner({ commit, state }) {
       if (state.isLucky && state.winners.length < state.maxWinners) {

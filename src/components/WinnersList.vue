@@ -7,7 +7,7 @@
                 <span>Winners</span>
             </div>
             </template>
-            <p v-for="winner in winners">{{ winner }}</p>
+            <p v-for="(winner, index) in winners" :key="index">{{ winner }}</p>
         </el-card>
     </el-badge>
     </div>

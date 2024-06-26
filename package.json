@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "lint": "eslint --config eslint.config.cjs src"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -13,13 +14,19 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@eslint/js": "^8.57.0",
+    "@typescript-eslint/parser": "^7.14.1",
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-router": "^5.0.8",
     "@vue/cli-plugin-vuex": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
     "@vue/compiler-sfc": "^3.0.0",
+    "@vue/eslint-config-standard": "^8.0.1",
     "element-plus": "^2.2.28",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.26.0",
     "sass": "^1.26.5",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "vue-eslint-parser": "^9.4.3"
   }
 }

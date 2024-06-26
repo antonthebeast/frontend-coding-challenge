@@ -19,7 +19,7 @@ import TopMenu from '@/components/TopMenu.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
-  name: 'Home',
+  name: 'HomePage',
   components: {
     NameSearcher,
     WinnersList,

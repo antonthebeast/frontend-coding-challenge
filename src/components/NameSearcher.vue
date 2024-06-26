@@ -12,7 +12,7 @@
       <el-col>Check that your name is lucky today:</el-col>
     </el-row>
     <el-row>
-      <el-col><el-input class="nameinput" v-model="nameInput" placeholder="Input 'name'" clearable type="text" :formatter="formatName" @keyup.enter="submitName" /></el-col>
+      <el-col><el-input v-model="nameInput" placeholder="Input 'name'" clearable type="text" :formatter="formatName" class="nameinput" @keyup.enter="submitName" /></el-col>
     </el-row>
     <el-row>
       <el-col><el-button type="success" :disabled="isDisabled" round @click="submitName">Submit</el-button></el-col>
@@ -22,21 +22,30 @@
 </template>
 
 <script>
+import { ElNotification } from 'element-plus'
 import NameSearchResponse from '@/components/NameSearchResponse.vue'
 import { mapActions, mapMutations, mapState, mapGetters } from 'vuex'
 
+const open_error = (message) => {
+  ElNotification({
+    title: 'Error',
+    message: message,
+    type: 'error',
+  })
+}
+
 export default {
   name: 'NameSearcher',
+  components: {
+    NameSearchResponse,
+  },
   data() {
     return {
       sorryDialogVisible: false,
     }
   },
-  components: {
-    NameSearchResponse,
-  },
   computed: {
-    ...mapState(['name', 'winners', 'maxWinners']),
+    ...mapState(['name', 'winners', 'maxWinners', 'error']),
     nameInput: {
       get() {
         return this.name
@@ -51,7 +60,7 @@ export default {
   },
   methods: {
     ...mapActions(['checkName']),
-    ...mapMutations(['setName']),
+    ...mapMutations(['setName', 'setError']),
     ...mapGetters(['isWinner']),
     submitName() {
       if (!this.isDisabled) {
@@ -68,7 +77,15 @@ export default {
     closeDialog() {
       this.sorryDialogVisible = false;
     }
-  }
+  },
+  watch: {
+    error(newError) {
+      if (newError) {
+        open_error(newError);
+        this.setError(null)
+      }
+    }
+  }  
 }
 </script>
 
